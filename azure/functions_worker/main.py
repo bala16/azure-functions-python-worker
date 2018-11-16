@@ -31,6 +31,9 @@ def main():
     logging.setup(log_level=args.log_level, log_destination=args.log_to)
 
     logger.info('Starting Azure Functions Python Worker.')
+    with open("pythonworker.txt", "a") as myfile:
+        myfile.write('Starting Azure Functions Python Worker.')
+
     logger.info('Worker ID: %s, Request ID: %s, Host Address: %s:%s',
                 args.worker_id, args.request_id, args.host, args.port)
 
