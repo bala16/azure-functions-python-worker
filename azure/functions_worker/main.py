@@ -27,6 +27,9 @@ def parse_args():
 
 
 def main():
+    with open("pythonworker-main.txt", "a") as myfile:
+        myfile.write('Starting Azure Functions Python Worker-.')
+
     args = parse_args()
     logging.setup(log_level=args.log_level, log_destination=args.log_to)
 
