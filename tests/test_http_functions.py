@@ -32,6 +32,11 @@ class TestHttpFunctions(testutils.WebHostTestCase):
         self.assertEqual(r.text, '<h1>Hello World™</h1>')
         self.assertEqual(r.headers['content-type'], 'text/html; charset=utf-8')
 
+    def test_return_http_no_body(self):
+        r = self.webhost.request('GET', 'return_http_no_body')
+        self.assertEqual(r.text, '')
+        self.assertEqual(r.status_code, 200)
+
     def test_return_http_auth_level_admin(self):
         r = self.webhost.request('GET', 'return_http_auth_admin',
                                  params={'code': 'testMasterKey'})
@@ -153,3 +158,20 @@ class TestHttpFunctions(testutils.WebHostTestCase):
         self.assertEqual(r.status_code, 500)
         # https://github.com/Azure/azure-functions-host/issues/2706
         # self.assertIn('Exception: ZeroDivisionError', r.text)
+
+    def test_unhandled_urllib_error(self):
+        r = self.webhost.request(
+            'GET', 'unhandled_urllib_error',
+            params={'img': 'http://example.com/nonexistent.jpg'})
+        self.assertEqual(r.status_code, 500)
+
+    def test_unhandled_unserializable_error(self):
+        r = self.webhost.request(
+            'GET', 'unhandled_unserializable_error')
+        self.assertEqual(r.status_code, 500)
+
+    def test_return_route_params(self):
+        r = self.webhost.request('GET', 'return_route_params/foo/bar')
+        self.assertEqual(r.status_code, 200)
+        resp = r.json()
+        self.assertEqual(resp, {'param1': 'foo', 'param2': 'bar'})
