@@ -1,7 +1,7 @@
 {
     "description":{
         "language":"python",
-        "extensions":[".py"],
+        "extensions":[".py", "py1"],
         "defaultExecutablePath":"python",
         "defaultWorkerPath":"worker.py"
     }
